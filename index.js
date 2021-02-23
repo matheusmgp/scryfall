@@ -2,9 +2,11 @@ const axios = require('axios').default;
 
 
 
-const metodoGet = async () => {
+const metodoGet = async (nome) => {
     try {
-      let retorno = await  axios.get('https://api.scryfall.com/cards/named?fuzzy=ayara');
+      
+      let url  = `https://api.scryfall.com/cards/named?fuzzy=${nome}`     
+      let retorno = await  axios.get(url);
       return retorno.data;
     } catch (err) {
       
@@ -12,33 +14,27 @@ const metodoGet = async () => {
     }
 };
 
-/*const metodoPost = async () => {
-    try {
-      let retorno = await  axios.get('https://scryfall.com/docs/api/cards/named=fuzzy=${cardNome}');
-       return retorno.data;
-    } catch (err) {
-        console.error(err);
-    }
-};*/
+
 
 //funcao auto invocada apenas para fins didaticos
 (async function  () {
-    var retorno = await metodoGet();
+
+    // no caso essa variavel ayara vai vim do seu frontend 
+    var cardNome = 'ayara'
+    var retorno = await metodoGet(cardNome);
     // aqui esta o retorno que vc precisa agora vc faz oq quiser com ele 
     // pode passar pra uma funcao de insert no banco por exemplo
-    var url = retorno.image_uris.normal
-    console.log("url",url);
+
+    if(retorno != undefined){
+        var url = retorno.image_uris.normal
+        console.log("url",url);
+    }else {
+        console.log('not found')
+    }
+   
 
 
-    // insiro o valor no objeto
-    // obs: nao sei se é no cardNome mas foi so exemplo
-    var objeto = {
-        "cardNome": url,
-        "cardEstado": "MN",
-        "cardPreco": "25.50",
-        "cardTroca": "true",
-      }
-      console.log("objeto",objeto)
+  
   }());
 
 
